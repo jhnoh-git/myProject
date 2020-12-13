@@ -8,6 +8,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
 <style>
 	.top{
 		text-align:right;
@@ -63,70 +65,35 @@
 		<h4 align="center"><a style="text-decoration:none; color:#000000;" href="${contextPath}/notice/noticeWriteForm.do">글 쓰기</a></h4>
 	</c:if>
 	
-	<%--페이징--%>
+	
 	<div class="text_center">
-	<c:set var="totalRow" value="${paging.totalRow}" />
-	<c:set var="page_Row" value="${paging.page_Row}" />
-	<c:set var="nowSection" value="${paging.nowSection}" />
-	<c:set var="section_Page" value="${paging.section_Page}" />
-	<c:set var="nowPage" value="${paging.nowPage}" />
-	
-	<c:if test="${(totalRow % page_Row) != 0}">
-		<c:if test="${nowSection > 0 }">
-			<a href="${contextPath}/notice/noticeList.do?nowSection=${nowSection-1}&nowPage=${((nowSection-1)*section_Page)+section_Page}">[이전]</a>
-		</c:if>
-		
-		<c:forEach var="paging" begin="${(nowSection*section_Page)+1}" end="${((nowSection*section_Page))+section_Page}" step="1">
-			<c:if test="${paging <= (totalRow/page_Row+1)}">
-				<c:if test="${paging == nowPage}">
-					<a style="font-weight:bold; color:blue;" href="${contextPath}/notice/noticeList.do?nowPage=${paging}&nowSection=${nowSection}">${paging}</a>
-				</c:if>
-				<c:if test="${paging != nowPage}">
-					<a href="${contextPath}/notice/noticeList.do?nowPage=${paging}&nowSection=${nowSection}">${paging}</a>
-				</c:if>
-			</c:if>
-		</c:forEach>
-		
-		<fmt:parseNumber var="totalSection" value="${((totalRow/page_Row)+1)/section_Page}" integerOnly="true"/>
-		<c:if test="${nowSection < totalSection}">
-			<a href="${contextPath}/notice/noticeList.do?nowPage=${((nowSection+1)*section_Page)+1}&nowSection=${nowSection + 1}">[다음]</a>
-		</c:if>
-	</c:if>
-	
-	<c:if test="${(totalRow % page_Row) == 0}">
-		<c:if test="${nowSection > 0 }">
-			<a href="${contextPath}/notice/noticeList.do?nowSection=${nowSection-1}&nowPage=${((nowSection-1)*section_Page)+section_Page}">[이전]</a>
-		</c:if>
-		
-		<c:forEach var="paging" begin="${(nowSection*section_Page)+1}" end="${(nowSection*section_Page)+section_Page}" step="1">
-			<c:if test="${paging <= (totalRow/page_Row)}">
-				<c:if test="${paging == nowPage}">
-					<a style="font-weight:bold; color:blue;" href="${contextPath}/notice/noticeList.do?nowPage=${paging}&nowSection=${nowSection}">${paging}</a>
-				</c:if>
-				<c:if test="${paging != nowPage}">
-					<a href="${contextPath}/notice/noticeList.do?nowPage=${paging}&nowSection=${nowSection}">${paging}</a>
-					</c:if>
-			</c:if>
-		</c:forEach>
-		
-		<fmt:parseNumber var="totalSection" value="${((totalRow/page_Row)-1)/section_Page}" integerOnly="true" />
-	
-		<c:if test="${(nowSection < totalSection) && (nowSection ne totalSection)}">
-			<a href="${contextPath}/notice/noticeList.do?nowPage=${((nowSection+1)*section_Page)+1}&nowSection=${nowSection + 1}">[다음]</a>
-		</c:if>
-	</c:if>
+	<jsp:include page="/views/common/paging.jsp" />
 	</div>
-	
-	
-	
+
+	<%
+		String n = (String)request.getAttribute("n_search");
+		String qe = (String)request.getAttribute("q");		
+	%>
+	<%-- f_search가 null이 아니라면 해당 범위로 지정 --%>
+	<c:if test="${n_search != null}">
+		<script type="text/javascript">
+			$(function search(){
+				var n_search = "<%= n %>";
+				var q = "<%= qe %>";
+				$("#n_search").val(n_search).prop("selected", true);
+				$("#n_search").removeAttr('all');
+				$("#q").prop("value", q);
+			});	
+		</script>
+	</c:if>
 	
 	<form action="${contextPath}/notice/noticeSearch.do" style="text-align:center; padding-top:10px;">
-		검색 : <select name="n_search">
-				<option value="n_title || n_content">전체</option>
+		검색 : <select id="n_search" name="n_search">
+				<option value="all" selected="selected">전체</option>
 				<option value="n_title">제목</option>
 				<option value="n_content">내용</option>
 			</select>
-			<input type="search" name="q">
+			<input type="text" id="q" name="q">
 			<input type="submit" value="검색">
 	</form>
 </body>

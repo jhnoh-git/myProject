@@ -25,14 +25,6 @@
 	
 	<form action="${contextPath}/free/freeModify.do" method="post">
 	<table style="width:80%; border:1px solid; border-collapse:collapse; margin:auto;">
-		<%--<tr>
-			<td style="width:20%; border:1px solid; text-align:right; font-weight:bold; padding-right:10px;">순번</td>
-			<td style="width:80%; border:1px solid black; text-align:left; padding-left:12px; color:gray;">
-				${freeVO.f_num}
-				<input type="hidden" name="f_num" value="${freeVO.f_num}">
-			</td>
-		</tr>  --%>
-		
 		<tr>
 			<td style="width:20%; border:1px solid; text-align:right; font-weight:bold; padding-right:10px;">작성자</td>
 			<td style="width:80%; border:1px solid black; text-align:left; padding-left:10px; color:gray;">

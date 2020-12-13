@@ -15,28 +15,6 @@ public class NoticeVO {
 	public NoticeVO() {
 	}
 	
-	/*삭제 예정
-	 * public NoticeVO(int rownum, int n_num, String id, String n_name, String n_title, String n_content, String imageFileName, Date n_date) {
-		this.rownum = rownum;
-		this.n_num = n_num;
-		this.id = id;
-		this.n_name = n_name;
-		this.n_title = n_title;
-		this.n_content = n_content;
-		this.imageFileName = imageFileName;
-		this.n_date = n_date;
-	}*/
-	
-	/*삭제 예정
-	 * public NoticeVO(int rownum, int n_num, String n_title, String n_name, Date n_date) {
-		this.rownum = rownum;
-		this.n_num = n_num;
-		this.n_title = n_title;
-		this.n_name = n_name;
-		this.n_date = n_date;
-	}*/
-
-	
 	public int getRownum() {
 		return rownum;
 	}

@@ -19,11 +19,7 @@
 <script type="text/javascript">
 	function pw_chk(){
 		var pw = $("#user_pw").val();
-		//alert(pw);
-		
 		var id = "<c:out value="${userInfo.user_id}" />"
-		//alert(id);
-		
 		if(pw == ''){
 			alert("비밀번호를 입력하세요.");
 			return;
@@ -37,15 +33,12 @@
 			data:{pw:pw, id:id},
 			success:function(data, textStatus){
 				if(data == 'usable'){
-					//$('#message').text("비밀번호가 맞습니다.");
 					location.href="${contextPath}/member/myPage.do";
 				}else{
 					$('#message').text("비밀번호가 틀립니다.");
 				}
 			}
-			
 		});
-		
 	}
 </script>
 <title>내 페이지</title>

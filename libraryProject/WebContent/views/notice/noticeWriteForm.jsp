@@ -5,8 +5,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <c:set var="now" value="<%= new Date() %>" />
-<%--<c:set var="n_num" value="${n_num}" />
-<c:set var="userInfo" value="${userInfo}" /> --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,53 +20,13 @@
 			reader.readAsDataURL(input.files[0]);
 		}
 	}
-	
-	<%--$(function(){
-		$("input[type=submit]").click(function(){
-			var result = $(":n_title").val();
-			alert(result);
-			if(!result){
-				alert("제목을 입력하세요.");
-				location.reload();
-			}
-			var result2 = $(":n_content").val();
-			alert(result2);
-			if(!result){
-				alert("내용을 입력하세요.");
-			}
-				
-		})
-	})
-	$("#submit").click(function(){
-		if($("#n_title").val().length==0){
-			alert("제목을 입력하세요");
-			$("#n_title").focus();
-			return false;
-		}
-		
-	});
-
-$(document).ready(function(){
-	$("#submit").click(function(){
-		var n_title = $("#n_title").val();
-	
-		if(n_title.length==0||n_title==''){
-			alert("제목을 입력하세요");
-			//$("#n_title").focus();
-			return;
-		}
-	}
-)});
---%>
 	function blank_chk(){	
 		var n_title = $("input#n_title").val();
-		//var n_content = $("input#n_content").val();
 		var n_content = document.noticeWrite.n_content.value;
 		if(n_title == '' || n_title == null || n_title.length == 0){
 			alert("제목을 입력하세요.");
 			return false;
 		}else{
-			//return true;
 			if(n_content == '' || n_content == null || n_content.length == 0){
 				alert("내용을 입력하세요.");
 				return false;
@@ -96,14 +54,6 @@ $(document).ready(function(){
 	
 	<form name="noticeWrite" action="${contextPath}/notice/noticeWrite.do" method="post" enctype="multipart/form-data" onsubmit="return blank_chk()">
 		<table style="width:80%; border:1px solid; border-collapse:collapse; margin:auto;">
-			<%-- <tr>
-				<td style="width:20%; border:1px solid; text-align:right; font-weight:bold; padding-right:10px;">순번</td>
-				<td colspan="2" style="width:80%; border:1px solid; text-align:left; padding-left:12px;">
-					<input type="number" name="n_num" value="${n_num}" disabled style="border:0;">
-			    	<input type="hidden" name="n_num" value="${n_num}" />
-			    </td>
-			</tr>--%>
-		
 			<tr>
 				<td style="width:20%; border:1px solid; text-align:right; font-weight:bold; padding-right:10px;">작성자</td>
 				<td colspan="2" style="width:80%; border:1px solid; text-align:left; padding-left:12px;">

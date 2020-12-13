@@ -2,10 +2,13 @@ package free.controller;
 
 import java.io.*;
 import java.text.*;
+import java.util.*;
 
 import javax.servlet.*;
 import javax.servlet.annotation.*;
 import javax.servlet.http.*;
+
+import com.sun.jndi.url.corbaname.*;
 
 import common.*;
 import free.command.*;
@@ -17,6 +20,7 @@ public class FreeController extends HttpServlet {
 	FreeCommand freeCommand;
 	FreeVO freeVO;
 	HttpSession session;
+	Cookie cookie;
 	
 	public void init() throws ServletException{
 		freeCommand = new FreeCommand();
@@ -36,13 +40,18 @@ public class FreeController extends HttpServlet {
 	protected void doHandle(HttpServletRequest request, HttpServletResponse response) 
 	throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
+		response.setContentType("text/html;charset=utf-8");
+		
 		//로직 처리 후 이동할 페이지
 		String nextPage = "";
 		//URI 추가 경로 정보 가져오기
 		String action = request.getPathInfo();
-		//삭제 예정 System.out.println("action : " + action);
-		
-		
+		String servletPath = request.getServletPath();
+		String contextPath = request.getContextPath();
+		request.setAttribute("action_", action);
+		request.setAttribute("servletPath", servletPath);
+		request.setAttribute("contextPath", contextPath);
+				
 		if(action.equals("/freeList.do")) {     //게시글 목록 조회
 			//페이징에 필요한 값 저장하기 위하여 VO객체 생성
 			PagingVO paging = new PagingVO();
@@ -59,29 +68,18 @@ public class FreeController extends HttpServlet {
 			
 			freeCommand.freeList(request, response, paging);
 			
-			//소제목 구분('글목록','검색결과')을 위함.
 			request.setAttribute("action", "freeList");
+					
 			nextPage ="/views/free/freeList.jsp";
 		}else if(action.equals("/freeWrite.do")) {     //게시글 작성하기
 			freeVO.setId(request.getParameter("id"));
-			//삭제 예정 int f_num = Integer.parseInt(request.getParameter("f_num"));
 			freeVO.setF_name(request.getParameter("f_name"));
 			freeVO.setF_title(request.getParameter("f_title"));
 			freeVO.setF_content(request.getParameter("f_content"));
 			String date = request.getParameter("f_date");
-			//삭제 예정 System.out.println("date : " + date);
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
-			// 삭제 예정 java.sql.Date f_date;
 			freeVO.setF_date(java.sql.Date.valueOf(date));
-			// 삭제 예정 System.out.println("f_date : " + f_date);
 			
-			//삭제 예정 freeVO.setId(id);
-			//freeVO.setF_num(f_num);
-			/*삭제 예정freeVO.setF_name(f_name);
-			freeVO.setF_title(f_title);
-			freeVO.setF_content(f_content);
-			freeVO.setF_date(f_date);
-			*/
 			freeCommand.freeWrite(freeVO);
 			nextPage = "/free/freeList.do";
 		}else if(action.equals("/freeView.do")) {     //게시글 상세 보기
@@ -94,7 +92,6 @@ public class FreeController extends HttpServlet {
 			MemberVO userInfo = (MemberVO)session.getAttribute("userInfo");
 			if(userInfo != null) {
 				String user_id = (String)userInfo.getUser_id();
-				//삭제 예정 System.out.println("user_id : " + user_id);
 				if(user_id.equals(freeVO.getId())){
 					request.setAttribute("login", true);
 				}
@@ -107,8 +104,6 @@ public class FreeController extends HttpServlet {
 			if(userInfo != null) {
 				request.setAttribute("user_name", userInfo.getUser_name());
 				request.setAttribute("user_id", userInfo.getUser_id());
-				//삭제 예정 int f_num = freeCommand.freeNumGet();
-				//삭제 예정 request.setAttribute("f_num", f_num+1);
 			}else {
 				request.setAttribute("login", false);
 			}
@@ -131,19 +126,9 @@ public class FreeController extends HttpServlet {
 			freeVO.setF_title(request.getParameter("f_title"));
 			freeVO.setF_content(request.getParameter("f_content"));
 			String date = request.getParameter("f_date");
-			//삭제 예정 System.out.println("date : " + date);
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-");
-			//삭제 예정 f_date);java.sql.Date f_date = 
 			freeVO.setF_date(java.sql.Date.valueOf(date));
 			
-			/*삭제 예정
-			freeVO.setF_num(f_num);
-			freeVO.setF_name(f_name);
-			freeVO.setF_title(f_title);
-			freeVO.setF_content(f_content);
-			freeVO.setF_date(f_date);
-			freeVO.setId(user_id);
-			*/
 			freeCommand.freeModify(freeVO);
 			nextPage = "/free/freeList.do";
 		}else if(action.equals("/freeDelete.do")) {     //게시글 삭제하기
@@ -151,11 +136,26 @@ public class FreeController extends HttpServlet {
 			freeCommand.freeDelete(f_num);
 			nextPage ="/free/freeList.do";
 		}else if(action.equals("/freeSearch.do")) {     //게시글 검색하기
-			//검색 부류(작성자, 글제복 등등)
+			PagingVO paging = new PagingVO();
+			String _nowPage = request.getParameter("nowPage");
+			int nowPage = Integer.parseInt(((_nowPage == null) ? "1" : _nowPage));
+			paging.setNowPage(nowPage);
+			
+			String _nowSection = request.getParameter("nowSection");
+			int nowSection = Integer.parseInt(((_nowSection == null) ? "0" : _nowSection));
+			paging.setNowSection(nowSection);
+			
 			String f_search = request.getParameter("f_search");
-			//검색어
+			if(f_search.equals("all") || f_search==null) {
+				f_search = "f_title||f_content||f_name";
+				request.setAttribute("f_search", "all");
+			}else {
+				request.setAttribute("f_search", f_search);
+			}
 			String q = request.getParameter("q");
-			freeCommand.freeSearch(request, response, f_search, q);
+			request.setAttribute("q", q);
+			
+			freeCommand.freeSearch(request, response, f_search, q, paging);
 			request.setAttribute("action", "freeSearch");
 			nextPage = "/views/free/freeList.jsp";
 		}

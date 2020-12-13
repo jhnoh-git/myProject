@@ -15,26 +15,6 @@ public class FreeVO {
 	
 	}
 	
-	/*삭제 예정
-	 * public FreeVO(int rownum, int f_num, String f_name, String f_title, String f_content, Date f_date) {
-		this.rownum = rownum;
-		this.f_num = f_num;
-		this.f_name = f_name;
-		this.f_title = f_title;
-		this.f_content = f_content;
-		this.f_date = f_date;
-	}*/
-	
-	/*삭제 예정
-	 * 	public FreeVO(int f_num, String id, String f_name, String f_title, String f_content, Date f_date) {
-		this.f_num = f_num;
-		this.id = id;
-		this.f_name = f_name;
-		this.f_title = f_title;
-		this.f_content = f_content;
-		this.f_date = f_date;
-	}*/
-
 	public int getRownum() {
 		return rownum;
 	}

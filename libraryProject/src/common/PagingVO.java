@@ -6,7 +6,6 @@ public class PagingVO {
 	int totalRow; //게시글 총 갯수(totList)
 	int nowPage; //사용자가 클릭한 page 번호
 	int nowSection; //section page 번호
-	//int totalSection; //총 section 갯수 삭제 예정
 	
 	public PagingVO() {
 		
@@ -30,14 +29,7 @@ public class PagingVO {
 	public void setNowSection(int nowSection) {
 		this.nowSection = nowSection;
 	}
-	/*삭제 예정
-	 * public int getTotalSection() {
-		return totalSection;
-	}
-	public void setTotalSection(int totalSection) {
-		this.totalSection = totalSection;
-	}*/
-
+	
 	public int getPage_Row() {
 		return page_Row;
 	}

@@ -25,8 +25,6 @@
 			reader.readAsDataURL(input.files[0]);
 		}
 	}
-
-
 </script>
 <title>공지사항</title>
 </head>
@@ -39,15 +37,6 @@
 	
 	<form action="${contextPath}/notice/noticeModify.do" method="post" enctype="multipart/form-data">
 		<table style="width:80%; border:1px solid; border-collapse:collapse; margin:auto;">
-			<%-- <tr>
-				<td style="width:20%; border:1px solid; text-align:right; font-weight:bold; padding-right:10px;">순번</td>
-				<td style="width:80%; border:1px solid; text-align:left; padding-left:12px;">
-					${noticeVO.n_num}
-					<input type="hidden" name="n_num" value="${noticeVO.n_num}">
-				</td>
-			</tr>
-			--%>
-		
 			<tr>
 				<td style="width:20%; border:1px solid; text-align:right; font-weight:bold; padding-right:10px;">작성자</td>
 				<td style="width:80%; border:1px solid; text-align:left; padding-left:12px;">${noticeVO.n_name}

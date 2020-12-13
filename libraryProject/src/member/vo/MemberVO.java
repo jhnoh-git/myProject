@@ -15,16 +15,6 @@ public class MemberVO {
 		
 	}
 	
-	/* 삭제 예정
-	public MemberVO(String user_id, String user_pw, String user_name, Date user_birth, String user_phone, String user_email) {
-		this.user_id = user_id;
-		this.user_pw = user_pw;
-		this.user_name = user_name;
-		this.user_birth = user_birth;
-		this.user_phone = user_phone;
-		this.user_email = user_email;
-	}
-	*/
 	public String getUser_id() {
 		return user_id;
 	}

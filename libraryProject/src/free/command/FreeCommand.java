@@ -22,8 +22,6 @@ public class FreeCommand {
 		//게시물 총 개수 조회
 		int totalRow = freeDAO.totalRow();
 		paging.setTotalRow(totalRow);
-		//request.setAttribute("totList", totList); 삭제 예정
-		//pageNum값을 DAO로 보낸다. 삭제 예정
 		ArrayList<FreeVO> list = freeDAO.freeList(paging);
 		request.setAttribute("paging", paging);
 		request.setAttribute("list", list);
@@ -50,15 +48,13 @@ public class FreeCommand {
 		freeDAO.freeDelete(f_num);
 	}
 	
-	/*삭제 예정
-	 * public int freeNumGet() {
-		int f_num = freeDAO.freeNumGet();
-		return f_num;
-	}*/
-	
 	//게시글 검색하기 f_search : 검색 종류(작성자, 글제목 등..) / q : 검색어
-	public void freeSearch(HttpServletRequest request, HttpServletResponse response, String f_search, String q) {
-		ArrayList<FreeVO> list = freeDAO.freeSearch(f_search, q);
+	public void freeSearch(HttpServletRequest request, HttpServletResponse response, String f_search, String q, PagingVO paging) {
+		int totalRow = freeDAO.totalRow(f_search, q);
+		paging.setTotalRow(totalRow);
+		
+		ArrayList<FreeVO> list = freeDAO.freeSearch(f_search, q, paging);
+		request.setAttribute("paging", paging);
 		request.setAttribute("list", list);
 	}
 }

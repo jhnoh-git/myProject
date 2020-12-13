@@ -17,21 +17,7 @@ public class BookVO {
 	Date returnexpected;  //반납 예정일
 	
 	public BookVO() {
-		
 	}
-	
-	/*삭제 예정
-	 * public BookVO(int b_num, String b_title, String b_name, String b_content, Date b_date, String b_state, String b_imageName, String id, String best) {
-		this.b_num = b_num;
-		this.b_title = b_title;
-		this.b_name = b_name;
-		this.b_content = b_content;
-		this.b_date = b_date;
-		this.b_state = b_state;
-		this.b_imageName = b_imageName;
-		this.id = id;
-		this.best = best;
-	}*/
 	
 	public int getB_num() {
 		return b_num;

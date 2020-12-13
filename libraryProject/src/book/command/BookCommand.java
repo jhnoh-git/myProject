@@ -18,8 +18,8 @@ public class BookCommand {
 	
 	public void booksList(HttpServletRequest request, HttpServletResponse response, PagingVO paging) {
 		int totalRow = dao.totalRow();
-		//»èÁ¦ ¿¹ÂÄ System.out.println("command totalRow : " + totalRow);
 		paging.setTotalRow(totalRow);
+		System.out.println("command totalRow : " + totalRow);
 		
 		ArrayList<BookVO> list = dao.booksList(paging);
 		request.setAttribute("paging", paging);
@@ -44,8 +44,12 @@ public class BookCommand {
 		dao.bookLoan(id, b_num, b_title);
 	}
 	
-	public void booksSearch(HttpServletRequest request, HttpServletResponse response, String b_search, String q) {
-		ArrayList<BookVO> list = dao.bookSearch(b_search, q);
+	public void booksSearch(HttpServletRequest request, HttpServletResponse response, String b_search, String q, PagingVO paging) {
+		int totalRow = dao.totalRow(b_search, q);
+		paging.setTotalRow(totalRow);
+		
+		ArrayList<BookVO> list = dao.bookSearch(b_search, q, paging);
+		request.setAttribute("paging", paging);
 		request.setAttribute("list", list);
 	}
 	

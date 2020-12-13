@@ -3,11 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-<%--<% request.setCharacterEncoding("utf-8"); --%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <style>
 	.top{ 
 		text-align:right
@@ -75,68 +75,35 @@
 		</c:if>
 	</table>
 	
-	<%--페이징--%>
 	<div class="text_center">
-	<c:set var="totalRow" value="${paging.totalRow}" />
-	<c:set var="page_Row" value="${paging.page_Row}" />
-	<c:set var="nowSection" value="${paging.nowSection}" />
-	<c:set var="section_Page" value="${paging.section_Page}" />
-	<c:set var="nowPage" value="${paging.nowPage}" />
-	
-	<c:if test="${(totalRow % page_Row) != 0}">
-		<c:if test="${nowSection > 0 }">
-			<a href="${contextPath}/books/bookList.do?nowSection=${nowSection-1}&nowPage=${((nowSection-1)*section_Page)+section_Page}">[이전]</a>
-		</c:if>
-		
-		<c:forEach var="paging" begin="${(nowSection*section_Page)+1}" end="${((nowSection*section_Page))+section_Page}" step="1">
-			<c:if test="${paging <= (totalRow/page_Row+1)}">
-				<c:if test="${paging == nowPage}">
-					<a style="font-weight:bold; color:blue;" href="${contextPath}/books/bookList.do?nowPage=${paging}&nowSection=${nowSection}">${paging}</a>
-				</c:if>
-				<c:if test="${paging != nowPage}">
-					<a href="${contextPath}/books/bookList.do?nowPage=${paging}&nowSection=${nowSection}">${paging}</a>
-				</c:if>
-			</c:if>
-		</c:forEach>
-		
-		<fmt:parseNumber var="totalSection" value="${((totalRow/page_Row)+1)/section_Page}" integerOnly="true"/>
-		<c:if test="${nowSection < totalSection}">
-			<a href="${contextPath}/books/bookList.do?nowPage=${((nowSection+1)*section_Page)+1}&nowSection=${nowSection + 1}">[다음]</a>
-		</c:if>
-	</c:if>
-	
-	<c:if test="${(totalRow % page_Row) == 0}">
-		<c:if test="${nowSection > 0 }">
-			<a href="${contextPath}/books/bookList.do?nowSection=${nowSection-1}&nowPage=${((nowSection-1)*section_Page)+section_Page}">[이전]</a>
-		</c:if>
-		
-		<c:forEach var="paging" begin="${(nowSection*section_Page)+1}" end="${(nowSection*section_Page)+section_Page}" step="1">
-			<c:if test="${paging <= (totalRow/page_Row)}">
-				<c:if test="${paging == nowPage}">
-					<a style="font-weight:bold; color:blue;" href="${contextPath}/books/bookList.do?nowPage=${paging}&nowSection=${nowSection}">${paging}</a>
-				</c:if>
-				<c:if test="${paging != nowPage}">
-					<a href="${contextPath}/books/bookList.do.do?nowPage=${paging}&nowSection=${nowSection}">${paging}</a>
-					</c:if>
-			</c:if>
-		</c:forEach>
-		
-		<fmt:parseNumber var="totalSection" value="${((totalRow/page_Row)-1)/section_Page}" integerOnly="true" />
-	
-		<c:if test="${(nowSection < totalSection) && (nowSection ne totalSection)}">
-			<a href="${contextPath}/books/bookList.do?nowPage=${((nowSection+1)*section_Page)+1}&nowSection=${nowSection + 1}">[다음]</a>
-		</c:if>
-	</c:if>
+		<jsp:include page="/views/common/paging.jsp" />
 	</div>
 	
+	<%
+		String b = (String)request.getAttribute("b_search");
+		String qe = (String)request.getAttribute("q");		
+	%>
+	 
+	 <c:if test="${b_search != null}">
+		<script type="text/javascript">
+			$(function search(){
+				var b_search = "<%= b %>";
+				var q = "<%= qe %>";
+							
+				$("#b_search").val(b_search).prop("selected", true);
+				$("#b_search").removeAttr('all');
+				$("#q").prop("value", q);
+			});	
+		</script>
+	</c:if>
 	
 	<form action="${contextPath}/books/booksSearch.do" style="text-align:center; padding-top:10px;">
-		검색 : <select name="b_search">
+		검색 : <select name="b_search" id="b_search">
 				<option value="b_title||b_name">전체</option>
-			 	<option value="b_title">책 제목</option>
+				<option value="b_title">책 제목</option>
 			 	<option value="b_name">저자</option>
 			 </select>
-			 <input type="text" name="q">
+			 <input type="text" name="q" id="q">
 			 <input type="submit" value="검색">
 	</form>
 </body>

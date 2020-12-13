@@ -27,12 +27,6 @@ public class NoticeCommand {
 		request.setAttribute("list", list);
 	}
 	
-	/*»èÁ¦ ¿¹ÂÄ 
-	 * public int noticeNumGet() {
-		int n_num = dao.noticeNumGet();
-		return n_num;
-	}*/
-	
 	public void noticeWrite(NoticeVO noticeVO) {
 		dao.noticeWrite(noticeVO);
 	}
@@ -51,8 +45,12 @@ public class NoticeCommand {
 	}
 	
 	public void noticeSearch(HttpServletRequest request, HttpServletResponse response,
-							String n_search, String q) {
-		ArrayList<NoticeVO> list = dao.noticeSearch(n_search, q);
+							String n_search, String q, PagingVO paging) {
+		int totalRow = dao.totalRow(n_search, q);
+		paging.setTotalRow(totalRow);
+		
+		ArrayList<NoticeVO> list = dao.noticeSearch(n_search, q, paging);
+		request.setAttribute("paging", paging);
 		request.setAttribute("list", list);
 	}
 	

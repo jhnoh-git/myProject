@@ -15,7 +15,6 @@
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript">
 	function readURL(input){
-		//alert($('#_imageName'));
 		if(input.files && input.files[0]){
 			var reader = new FileReader();
 			reader.onload = function(e){
@@ -45,8 +44,6 @@
 			</td>
 			<td rowspan="4" style="text-align:center;">
 				
-				<%--<c:set var="b_imageName" value="${vo.b_imageName}" />
-				 --%>
 				<c:if test="${vo.b_imageName != null}">
 					<img id="preview" src="${contextPath}/download/b_image.do?b_imageName=${vo.b_imageName}&b_num=${vo.b_num}" width="100" height="150">
 					<input type="file" id="b_imageName" name="b_imageName" onchange="readURL(this);">

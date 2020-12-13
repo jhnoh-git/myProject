@@ -34,34 +34,8 @@
 					$('#message').text("사용할 수 없는 ID입니다.").css("color","red");
 				}
 			}
-			//complete:function(data,textStatus){}
 		});
 	}
-	<%--$(function(){
-		$('#id_chk').click(function(){
-			if($('#user_id') == ''){
-				alert("아이디를 입력하세요.");
-			}
-			$.ajax({
-				type:"post",
-				async : false,
-				url : "${contextPath}/member/id_chk.do",
-				dataType : "text",
-				data : {
-					id: $('#user_id').val()
-				},
-				success : function(data, textStatus){
-					if(data == 'usable'){
-						alert(textStatus);
-						$('#message').text("사용할 수 있는 ID입니다.");
-					}else{
-						alert(textStatus);
-						$('#message').text("사용할 수 없는 ID입니다.");
-					}
-				}
-			});
-		});
-	});--%>
 </script>
 <title>회원가입</title>
 </head>
@@ -110,11 +84,11 @@
 				<td style="text-align:right; width:45%; padding:15px;">e-mail</td>
 				<td style="text-align:left; width:55%;">
 					<input type="text" name="user_email">
-					<select name="email_adress">
+					<select name="email_address">
 						<option value="@daum.net">@daum.net</option>
 						<option value="@naver.com">@naver.com</option>
 						<option value="@google.com">@google.com</option>
-						<option value="직접입력"></option>
+						<option value="직접입력">직접 입력</option>
 					</select>
 				</td>
 			</tr>

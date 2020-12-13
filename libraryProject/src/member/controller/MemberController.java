@@ -38,7 +38,6 @@ public class MemberController extends HttpServlet {
 		PrintWriter pw = response.getWriter();
 		String nextPage = null;
 		String action = request.getPathInfo();
-		//삭제 예정 System.out.println("action : " + action);
 		
 		if(action.equals("/loginForm.do")) {     //로그인 Form으로 이동
 			nextPage = "/views/member/loginForm.jsp";
@@ -50,9 +49,9 @@ public class MemberController extends HttpServlet {
 			memberVO = memberCommand.login_chk(user_id, user_pw);
 			
 			if(memberVO != null && memberVO.getUser_id() != null) {
-				HttpSession session = request.getSession();                   				//삭제 예정 session.setAttribute("isLogon", true);
+				HttpSession session = request.getSession();                   				
 				session.setAttribute("userInfo", memberVO);
-				request.setAttribute("msg", true);                                    				//삭제 예정 System.out.println(next_page);
+				request.setAttribute("msg", true);                                    				
 				if(next_page.equals("null")) {
 					nextPage = "/main/main.jsp";
 				}else {
@@ -65,7 +64,7 @@ public class MemberController extends HttpServlet {
 			}
 		}else if(action.equals("/logout.do")){    
 			HttpSession session = request.getSession(false);
-			session.removeAttribute("userInfo");                                                    //삭제 예정 session.removeAttribute("isLogon");
+			session.removeAttribute("userInfo");                                                   
 			nextPage = "/main/main.jsp";
 		}else if(action.equals("/memberJoinForm.do")) {
 			nextPage = "/views/member/memberJoinForm.jsp";
@@ -78,52 +77,7 @@ public class MemberController extends HttpServlet {
 			memberVO.setUser_email(user_email);
 			//생년월일은 자료형 변환 후 VO에 저장
 			String birth = request.getParameter("user_birth");
-			//삭제 예정 System.out.println(birth);
-			//삭제 예정 SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
 			memberVO.setUser_birth(java.sql.Date.valueOf(birth));
-			//삭제 예정 java.sql.Date user_birth;
-			//삭제 예정 try {
-				//삭제 예정 user_birth = (java.sql.Date) format.parse(birth);
-				//삭제 예정 user_birth = ;
-				
-				//삭제 예정 System.out.println(user_birth);
-			//삭제 예정} catch (Exception e) {
-				//삭제 예정 e.printStackTrace();
-			//삭제 예정 }
-			
-			
-			/*삭제 예정
-			 * memberVO.setUser_id(user_id);
-			memberVO.setUser_pw(user_pw);
-			memberVO.setUser_name(user_name);
-			memberVO.setUser_phone(user_phone);
-			memberVO.setUser_email(user_email);*/
-			
-			
-			
-			/*삭제 예정String birth = request.getParameter("user_birth");
-			String birth_ = birth.replace("-", "/");
-			SimpleDateFormat fm = new SimpleDateFormat("yyyy년 MM월 dd일");
-			
-			try {
-				Date user_birth = (Date) fm.parse(birth_);
-				memberVO.setUser_birth(user_birth);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			*/
-			
-			/* 삭제 예정
-			SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd");
-			Date user_birth ;
-			try {
-				user_birth = (Date) fm.parse(birth);
-				memberVO.setUser_birth(user_birth);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			*/
 			
 			memberCommand.memberJoin(memberVO);
 			nextPage = "/views/member/loginForm.jsp";
@@ -136,7 +90,6 @@ public class MemberController extends HttpServlet {
 			}else{
 				pw.print("not_usable");
 			}
-			//삭제 예정 nextPage = "/views/member/memberJoinForm.jsp";
 			return;
 		}else if(action.equals("/pw_chkForm.do")) {
 			nextPage = "/views/member/pw_chkForm.jsp";
@@ -146,9 +99,7 @@ public class MemberController extends HttpServlet {
 			String user_pw = request.getParameter("pw");
 		
 			result = memberCommand.pw_chk(user_id, user_pw);
-			//삭제 예정 System.out.print("controller : " + result);
 			if(result == true) {
-				//삭제 에정 System.out.println(result==true);
 				pw.print("usable");
 			}else {
 				pw.print("not_usable");
@@ -163,17 +114,8 @@ public class MemberController extends HttpServlet {
 			memberVO.setUser_phone(request.getParameter("user_phone"));
 			String user_email = request.getParameter("user_email") + request.getParameter("email_address");
 			memberVO.setUser_email(user_email);
-			//삭제 예정 System.out.println(user_email + email_address);
 			String birth = request.getParameter("user_birth");
 			memberVO.setUser_birth( java.sql.Date.valueOf(birth));
-			
-			
-			/*삭제 예정memberVO.setUser_id(user_id);
-			memberVO.setUser_pw(user_pw);
-			memberVO.setUser_name(user_name);
-			memberVO.setUser_birth(user_birth);
-			memberVO.setUser_phone(user_phone);
-			memberVO.setUser_email(user_email+email_address);*/
 			
 			memberCommand.memberInfoModify(memberVO);
 			nextPage = "/main/main.jsp";

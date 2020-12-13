@@ -20,9 +20,7 @@
 			function result(){
 				alert("로그인이 필요합니다.");
 				location.href="${contextPath}/views/member/loginForm.jsp?next_page=/free/freeWriteForm.do";
-			}
-			
-			
+			}			
 		</script>
 	</c:if>
 	<style>
@@ -42,14 +40,6 @@
 	<form name="freeWrite" action="${contextPath}/free/freeWrite.do" method="post" onsubmit="return blank_chk()">
 	
 		<table style="width:80%; border:1px solid; border-collapse:collapse; margin:auto;">
-			<%-- <tr>
-				<td style="width:20%; border:1px solid; text-align:right; font-weight:bold; padding-right:10px;">순번</td>
-				<td style="width:80%; border:1px solid; text-align:left; padding-left:12px;">
-					 <input type="number" name="f_num" value="${f_num}" disabled style="border:0;">
-			    	 <input type="hidden" name="f_num" value="${f_num}" />
-			    </td>
-			</tr>--%>
-			
 			<tr>
 				<td style="width:20%; border:1px solid; text-align:right; font-weight:bold; padding-right:10px;">작성자</td>
 				<td style="width:80%; border:1px solid; text-align:left; padding-left:12px;">
@@ -97,12 +87,10 @@
 			var f_content = document.freeWrite.f_content.value;
 	
 			if(f_title == '' || f_title == null || f_title.length == 0){
-				//alert(f_title);
 				alert("제목을 입력하세요");
 				return false;
 			}else{
 				if(f_content == '' || f_content == null || f_content.length == 0){
-				//alert(f_content);
 				alert("내용을 입력하세요.");
 				return false;
 			}else{

@@ -13,7 +13,6 @@ import common.*;
 import free.command.*;
 import free.vo.*;
 
-
 public class BookDAO {
 	DataSource dataFactory;
 	Connection conn;
@@ -38,8 +37,7 @@ public class BookDAO {
 		list = new ArrayList<BookVO>();
 		try {
 			conn = dataFactory.getConnection();
-			//삭제String query = "select * from lib_books order by b_num desc";
-			String query = "select * from (select ROWNUM as rown, a.* from (select * from lib_books order by b_num asc) a order by rown desc) where rown > (?-(?*?)) and rown<=(?-(?*?))+?";
+			String query = "select * from (select ROWNUM as rown, a.* from (select * from lib_books order by b_num asc) a order by rown desc) where rown>(?-(?*?)) and rown<=(?-(?*?))+?";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, paging.getTotalRow());
 			pstmt.setInt(2, paging.getNowPage());
@@ -48,14 +46,9 @@ public class BookDAO {
 			pstmt.setInt(5, paging.getNowPage());
 			pstmt.setInt(6, paging.getPage_Row());
 			pstmt.setInt(7, paging.getPage_Row());
-			
-			//삭제System.out.println("query : " + query);
-			//pstmt = conn.prepareStatement(query);
 			rs = pstmt.executeQuery();
-			//삭제System.out.println(rs.getFetchSize());
 			
 			while(rs.next()) {
-				//삭제System.out.println("while 시작");
 				bookVO = new BookVO();
 				bookVO.setB_num(rs.getInt("b_num"));
 				bookVO.setB_title(rs.getString("b_title"));
@@ -65,7 +58,6 @@ public class BookDAO {
 				bookVO.setB_state(rs.getString("b_state"));
 				bookVO.setB_imageName(rs.getString("b_imagename"));
 				bookVO.setId(rs.getString("id"));
-				//삭제 System.out.println("DAO b_title : " + vo.getB_title());
 				list.add(bookVO);
 			}
 		} catch (SQLException e) {
@@ -109,7 +101,6 @@ public class BookDAO {
 			conn = dataFactory.getConnection();
 			String query = "insert into lib_books(b_num, b_imageName, b_title, b_name, b_date, b_content, best)"+
 						"values(?, ?, ?, ?, ?, ?, ?)";
-			//삭제 System.out.println("query : " + query);
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, bookVO.getB_num());
 			pstmt.setString(2, bookVO.getB_imageName());
@@ -125,17 +116,13 @@ public class BookDAO {
 			try {
 				pstmt.close();
 				conn.close();
-			
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		
-		
 	}
 	
 	public BookVO bookView(int b_num) {
-		
 		try {
 			conn = dataFactory.getConnection();
 			String query = "select * from lib_books where b_num=?";
@@ -162,12 +149,10 @@ public class BookDAO {
 				rs.close();
 				pstmt.close();
 				conn.close();
-			
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		
 		return bookVO;
 	}
 	
@@ -188,12 +173,10 @@ public class BookDAO {
 			try {
 				pstmt.close();
 				conn.close();
-			
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		
 	}
 	
 	public void bookState(int b_num, String id) {
@@ -211,24 +194,28 @@ public class BookDAO {
 			try {
 				pstmt.close();
 				conn.close();
-			
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		
-		
 	}
 	
-	public ArrayList<BookVO> bookSearch(String b_search, String q){
+	public ArrayList<BookVO> bookSearch(String b_search, String q, PagingVO paging){
 		ArrayList<BookVO> list = new ArrayList<BookVO>();
 		try {
 			conn = dataFactory.getConnection();
-			String query = "select * from lib_books where "
+			String query = "select * from (select ROWNUM as rown, a.* from (select * from lib_books where "
 							+b_search
-							+" like ? order by b_num desc";
+							+" like ? order by b_num desc) a order by rown desc) where rown > (?-(?*?)) and rown <= (?-(?*?))+?";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, "%"+q+"%");
+			pstmt.setInt(2, paging.getTotalRow());
+			pstmt.setInt(3, paging.getNowPage());
+			pstmt.setInt(4, paging.getPage_Row());
+			pstmt.setInt(5, paging.getTotalRow());
+			pstmt.setInt(6, paging.getNowPage());
+			pstmt.setInt(7, paging.getPage_Row());
+			pstmt.setInt(8, paging.getPage_Row());
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				bookVO = new BookVO();
@@ -237,7 +224,6 @@ public class BookDAO {
 				bookVO.setB_imageName(rs.getString("b_imageName"));
 				bookVO.setB_name(rs.getString("b_name"));
 				bookVO.setB_state(rs.getString("b_state"));
-				
 				list.add(bookVO);
 			}
 		} catch (SQLException e) {
@@ -247,12 +233,10 @@ public class BookDAO {
 				rs.close();
 				pstmt.close();
 				conn.close();
-			
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		
 		return list;
 	}
 	
@@ -261,7 +245,6 @@ public class BookDAO {
 			conn = dataFactory.getConnection();
 			String query = null;
 			if(vo.getB_imageName()==null) {
-				//삭제 System.out.println("imageName null 실행");
 				query = "update lib_books set b_title=?, b_name=?, b_date=?, b_content=?, best=? where  b_num=?";
 				pstmt = conn.prepareStatement(query);
 				pstmt.setString(1, vo.getB_title());
@@ -271,7 +254,6 @@ public class BookDAO {
 				pstmt.setString(5, vo.getBest());
 				pstmt.setInt(6, vo.getB_num());
 			}else {
-				//삭제System.out.println("imageName else 실행");
 				query = "update lib_books set b_imageName=?, b_title=?, b_name=?, b_date=?, b_content=?, best=? where  b_num=?";
 				pstmt = conn.prepareStatement(query);
 				pstmt.setString(1, vo.getB_imageName());
@@ -287,15 +269,12 @@ public class BookDAO {
 			e.printStackTrace();
 		}finally {
 			try {
-				
 				pstmt.close();
 				conn.close();
-			
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		
 	}
 	
 	public void bookDelete(int b_num, String b_imageName) {
@@ -314,10 +293,8 @@ public class BookDAO {
 			e.printStackTrace();
 		}finally {
 			try {
-				
 				pstmt.close();
 				conn.close();
-			
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -338,7 +315,6 @@ public class BookDAO {
 				bookVO.setB_num(rs.getInt("b_num"));
 				bookVO.setB_title(rs.getString("b_title"));
 				bookVO.setB_state(rs.getString("b_state"));
-				
 				list.add(bookVO);
 			}
 		} catch (SQLException e) {
@@ -368,9 +344,7 @@ public class BookDAO {
 				bookVO.setB_num(rs.getInt("b_num"));
 				bookVO.setB_title(rs.getString("b_title"));
 				bookVO.setLoanDate(rs.getDate("loanDate"));
-				//삭제 System.out.println(rs.getDate("loanDate"));
 				bookVO.setReturnDate(rs.getDate("returnDate"));
-				//삭제System.out.println(rs.getDate("loanDate"));
 				bookVO.setReturnexpected(rs.getDate("returnexpected"));
 				list.add(bookVO);
 			}
@@ -381,29 +355,11 @@ public class BookDAO {
 	}
 	
 	public void bookReturn(int b_num, String id, String b_title) {
-		
 		try {
 			conn = dataFactory.getConnection();
-			
-			/*삭제String query = "update lib_loanList set RETURNDATE=sysdate "
-					+ "where LOAN_NUM=(select max(loan_num) from lib_loanList where id=? "
-					+ "AND b_title=?)";*/
-			//	삭제update lib_loanList set returnDate=SYSDATE where loan_num=(select max(loan_num) from lib_loanList where id='cow' AND b_title='시간을 건너는 집');
-			//삭제String query = "update lib_loanList set RETURNDATE=(select sysdate from dual) where LOAN_NUM=(select max(loan_num) from lib_loanList where id=? AND b_title=?)";
-			//삭제String query = "insert into lib_loanList(returnDate) values(sysdate) where LOAN_NUM=(select max(loan_num) from lib_loanList where id=? AND b_title=?)";
-			//삭제String query = "insert into lib_loanList((select column_name from lib_loanList where loan_num=(select max(loan_num) from lib_loanList where id=? AND b_title=?))) values(sysdate)";
-			//삭제String query = "UPDATE LIB_LOANLIST SET RETURNDATE=SYSDATE WHERE LOAN_NUM=(SELECT MAX(LOAN_NUM) FROM LIB_LOANLIST WHERE ID=? AND B_TITLE=?)";
-			/*삭제String query = "UPDATE LIB_LOANLIST SET RETURNDATE=SYSDATE where LOAN_NUM=?";*/
 			String query = "UPDATE LIB_LOANLIST SET RETURNDATE=SYSDATE where LOAN_NUM=(SELECT MAX(LOAN_NUM) FROM LIB_LOANLIST where id='"+id+"' AND b_title='"+b_title+"')";
-			//삭제Logger logger = Logger.debug(BookDAO.java);		
-					
-			//삭제System.out.println(query);
 			pstmt = conn.prepareStatement(query);
-			//삭제pstmt.setString(1, "id");
-			//삭제pstmt.setString(2, "b_title");	
-			//삭제pstmt.setInt(1, 31);
 			pstmt.execute();
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -432,13 +388,10 @@ public class BookDAO {
 			try {
 				pstmt.close();
 				conn.close();
-			
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		
-		
 	}
 	
 	public int totalRow() {
@@ -450,9 +403,7 @@ public class BookDAO {
 			rs = pstmt.executeQuery();
 			if(rs.next())
 				totRow = rs.getInt(1);
-			//삭제 System.out.println("DAO totalRow : " + totRow);
 		} catch (SQLException e) {
-			
 			e.printStackTrace();
 		}finally {
 			try {
@@ -463,9 +414,30 @@ public class BookDAO {
 				e.printStackTrace();
 			}
 		}
-		//삭제 System.out.println("totList 갯수 : " + rs);
 		return totRow;
 	}
 	
-
+	public int totalRow(String b_search, String q) {
+		int totRow = 0;
+		try {
+			conn = dataFactory.getConnection();
+			String qeury = "select count(*) from lib_books where " + b_search + " like ?";
+			pstmt = conn.prepareStatement(qeury);
+			pstmt.setString(1, "%"+q+"%");
+			rs = pstmt.executeQuery();
+			if(rs.next())
+				totRow = rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				rs.close();
+				pstmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return totRow;
+	}
 }

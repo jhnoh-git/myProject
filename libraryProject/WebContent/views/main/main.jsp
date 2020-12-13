@@ -10,9 +10,6 @@
 	.top{
 		text-align:right;
 	}
-	<%--td{
-		font-weight:bold;
-	}--%>
 </style>
 <title>도서 관리 프로그램</title>
 </head>
@@ -20,12 +17,10 @@
 	<div class="top">
 	<jsp:include page="main_top.jsp" />
 	</div>
-	<%--<br> --%>
 	<jsp:include page="main_menu.jsp" />
 	
 	<table style="width:100%; height:100%;">
 		<%-- 공지사항 메뉴 가져오기 (최근 5개) --%>
-
 		<tr>
 			<td>
 				<table style="border-collapse:collapse; width:80%; margin-top:20px; margin-left:auto; margin-right:auto;">
@@ -99,16 +94,8 @@
 						</table>
 							
 					</c:forEach>
-					
 					</tr>
-					<%-- 
-					<c:forEach items="${b_list}" var="b_list" begin="6" end="10">
-						<tr>
-							<td>${b_list}</td>
-						</tr>
-					</c:forEach>--%>
 				</table>
-			
 	</table>
 </body>
 </html>

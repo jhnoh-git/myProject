@@ -29,7 +29,6 @@ public class FileDownloadController extends HttpServlet {
 		response.setContentType("text/html;charset=utf-8");
 		
 		String action = request.getPathInfo();
-		//삭제 System.out.println("action : " + action);
 		
 		if(action.equals("/b_image.do")) {
 			//이미지 파일 이름과 글 번호를 가져온다.
